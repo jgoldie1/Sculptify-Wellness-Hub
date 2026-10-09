@@ -1,6 +1,6 @@
-const SUPABASE_URL='https://fxluchtdfpediivhoksl.supabase.co';
-const SUPABASE_KEY='sb_publishable_y2OadDy1zy8QlWy-YAcdlg_uzAYMLzj';
-const HOLOGPT_URL='https://fxluchtdfpediivhoksl.supabase.co/functions/v1/sculptify-hologpt';
+const SUPABASE_URL=window.SCULPTIFY_CONFIG.supabaseUrl;
+const SUPABASE_KEY=window.SCULPTIFY_CONFIG.supabasePublishableKey;
+const HOLOGPT_URL=window.SCULPTIFY_FUNCTION_URL('sculptify-hologpt');
 const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
 let installPrompt=null;

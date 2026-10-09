@@ -1,4 +1,4 @@
-const SUPABASE_URL='https://fxluchtdfpediivhoksl.supabase.co';const SUPABASE_KEY='sb_publishable_y2OadDy1zy8QlWy-YAcdlg_uzAYMLzj';const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);const CLIENT_CLAIM_URL='https://fxluchtdfpediivhoksl.supabase.co/functions/v1/sculptify-client-claim';const $=s=>document.querySelector(s);let current=null;
+const SUPABASE_URL=window.SCULPTIFY_CONFIG.supabaseUrl;const SUPABASE_KEY=window.SCULPTIFY_CONFIG.supabasePublishableKey;const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);const CLIENT_CLAIM_URL=window.SCULPTIFY_FUNCTION_URL('sculptify-client-claim');const $=s=>document.querySelector(s);let current=null;
 function parse3(v){return v.split(/\n+/).map(x=>x.trim()).filter(Boolean).map(x=>{const [name,description,price]=x.split('|').map(y=>y.trim());return{name,description,price}})}
 function parse2(v){return v.split(/\n+/).map(x=>x.trim()).filter(Boolean).map(x=>{const [question,answer]=x.split('|').map(y=>y.trim());return{question,answer}})}
 function lines3(a){return (Array.isArray(a)?a:[]).map(x=>[x.name||'',x.description||'',x.price||''].join(' | ')).join('\n')}
