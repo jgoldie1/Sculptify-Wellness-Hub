@@ -24,6 +24,10 @@ jobs:
           node --check app.js
           node --check service-worker.js
           if [ -f owner-tools.js ]; then node --check owner-tools.js; fi
+          if [ -f template-studio.js ]; then node --check template-studio.js; fi
+          if [ -f client.js ]; then node --check client.js; fi
+          if [ -f client-editor.js ]; then node --check client-editor.js; fi
+          if [ -f templates.js ]; then node --check templates.js; fi
 
       - name: Validate manifest and deployment JSON
         run: |
@@ -41,6 +45,11 @@ jobs:
           test -f SKILL.md
           test -f SECURITY.md
           test -f BACKUP_RECOVERY.md
+          test -f client.html
+          test -f client-editor.html
+          test -f templates.html
+          test -f CLIENT_HANDOFF.md
+          test -f TEMPLATE_BUSINESS_MODEL.md
 
       - name: Block known secret patterns in public web files
         shell: bash
@@ -54,7 +63,7 @@ jobs:
 
       - name: Block private owner email from public app code
         run: |
-          if grep -R -F "tashaashe0@gmail.com" index.html app.js owner-tools.js 2>/dev/null; then
+          if grep -R -F "tashaashe0@gmail.com" index.html app.js owner-tools.js template-studio.js client*.js client*.html templates.* 2>/dev/null; then
             echo "Private owner email must not be hardcoded in public app code."
             exit 1
           fi
