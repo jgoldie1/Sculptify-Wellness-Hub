@@ -1,0 +1,70 @@
+name: Sculptify Quality & Security
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: JavaScript syntax
+        run: |
+          node --check app.js
+          node --check service-worker.js
+          if [ -f owner-tools.js ]; then node --check owner-tools.js; fi
+
+      - name: Validate manifest and deployment JSON
+        run: |
+          python -m json.tool manifest.webmanifest >/dev/null
+          python -m json.tool vercel.json >/dev/null
+
+      - name: Required launch files
+        run: |
+          test -f index.html
+          test -f app.js
+          test -f styles.css
+          test -f manifest.webmanifest
+          test -f service-worker.js
+          test -f brand-mark.svg
+          test -f SKILL.md
+          test -f SECURITY.md
+          test -f BACKUP_RECOVERY.md
+
+      - name: Block known secret patterns in public web files
+        shell: bash
+        run: |
+          set -e
+          FILES=$(find . -maxdepth 2 -type f \( -name "*.js" -o -name "*.html" -o -name "*.json" -o -name "*.toml" \))
+          if grep -E '(sk_(live|test)_[A-Za-z0-9]{16,}|sb_secret_[A-Za-z0-9_-]{16,}|AIza[A-Za-z0-9_-]{30,}|BEGIN (RSA|EC|OPENSSH) PRIVATE KEY)' $FILES; then
+            echo "Potential secret found in public web/config files."
+            exit 1
+          fi
+
+      - name: Block private owner email from public app code
+        run: |
+          if grep -R -F "tashaashe0@gmail.com" index.html app.js owner-tools.js 2>/dev/null; then
+            echo "Private owner email must not be hardcoded in public app code."
+            exit 1
+          fi
+
+  codeql:
+    name: CodeQL
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: github/codeql-action/init@v3
+        with:
+          languages: javascript-typescript
+      - uses: github/codeql-action/analyze@v3

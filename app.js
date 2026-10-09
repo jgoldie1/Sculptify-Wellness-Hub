@@ -1,7 +1,6 @@
 const SUPABASE_URL='https://fxluchtdfpediivhoksl.supabase.co';
 const SUPABASE_KEY='sb_publishable_y2OadDy1zy8QlWy-YAcdlg_uzAYMLzj';
 const HOLOGPT_URL='https://fxluchtdfpediivhoksl.supabase.co/functions/v1/sculptify-hologpt';
-const OWNER_EMAIL='tashaashe0@gmail.com';
 const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
 let installPrompt=null;
@@ -120,13 +119,16 @@ async function refreshOwner(){
   $('#setting-location').value=siteSettings.location||'San Diego, California';
   $('#setting-url').value=siteSettings.site_url||'';
   $('#setting-hero').value=siteSettings.hero_title||'Sculpt Your Body. Heal Your Mind. Build Your Future.';
+  setTimeout(()=>window.loadSculptifyOwnerTools?.(),0);
 }
 $('#owner-login-btn').onclick=async()=>{
+  const email=$('#owner-email').value.trim().toLowerCase();
+  if(!email){setStatus('#owner-login-status','Enter the owner email first.',true);return;}
   setStatus('#owner-login-status','Sending secure sign-in link…');
   const redirectTo=location.origin+location.pathname;
-  const {error}=await db.auth.signInWithOtp({email:OWNER_EMAIL,options:{emailRedirectTo:redirectTo,shouldCreateUser:true}});
+  const {error}=await db.auth.signInWithOtp({email,options:{emailRedirectTo:redirectTo,shouldCreateUser:true}});
   if(error){setStatus('#owner-login-status','Could not send sign-in link: '+error.message,true);return;}
-  setStatus('#owner-login-status','Check '+OWNER_EMAIL+' for the secure Sculptify sign-in link.');
+  setStatus('#owner-login-status','If this is the authorized Sculptify owner email, check the inbox for the secure sign-in link.');
 };
 $('#settings-form').onsubmit=async e=>{
   e.preventDefault();setStatus('#settings-status','Saving…');

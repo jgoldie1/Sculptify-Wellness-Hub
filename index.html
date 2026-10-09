@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="SculptifyLTD">
-  <meta name="description" content="SculptifyLTD — holistic healing, body sculpting, academy, staffing and store in San Diego. HoloGPT powered by Stubbs AI.">
+  <meta name="description" content="SculptifyLTD — holistic healing, body sculpting, academy, staffing and store in San Diego. HoloGPT powered by Stubbs AI.">\n  <meta name="referrer" content="strict-origin-when-cross-origin">
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./brand-mark.svg" type="image/svg+xml">
   <link rel="stylesheet" href="./styles.css">
@@ -157,7 +157,7 @@
     <div class="owner-head"><div><span class="eyebrow">SCULPTIFY OWNER</span><h3>Owner Studio</h3></div><button id="owner-close">×</button></div>
     <div id="owner-login">
       <p>Sign in with the approved owner email. Supabase sends a secure magic link—no extra password to remember.</p>
-      <input id="owner-email" type="email" value="tashaashe0@gmail.com" readonly>
+      <input id="owner-email" type="email" autocomplete="email" placeholder="Owner email">
       <button class="button gold full" id="owner-login-btn">Email My Sign-In Link</button>
       <p class="status" id="owner-login-status"></p>
     </div>
@@ -173,11 +173,50 @@
         <button class="button purple full" type="submit">Save Live Site Settings</button>
         <p class="status" id="settings-status"></p>
       </form>
+      <div class="owner-divider"></div>
+      <section class="owner-module">
+        <span class="eyebrow">BUSINESS OS</span><h4>Daily / Weekly Owner Plan</h4>
+        <p class="owner-help">HoloGPT/Stubbs AI helps her know what to do next without guessing.</p>
+        <button class="button gold full" id="owner-coach-btn" type="button">Ask HoloGPT: What Should I Do Today?</button>
+        <p id="owner-coach-status" class="status"></p>
+        <div id="owner-coach-plan" class="owner-list"></div>
+        <div id="owner-task-list" class="owner-list">Loading…</div>
+      </section>
+      <div class="owner-divider"></div>
+      <section class="owner-module">
+        <span class="eyebrow">BUSINESS ACADEMY</span><h4>Learn How to Run Sculptify</h4>
+        <p class="owner-help">Launch, client service, Academy, Staffing, store sourcing, money, marketing, SEO, grants and cybersecurity.</p>
+        <div id="business-academy" class="owner-list">Loading…</div>
+      </section>
+      <div class="owner-divider"></div>
+      <section class="owner-module">
+        <span class="eyebrow">STORE SOURCING</span><h4>Product Pipeline</h4>
+        <p class="owner-help">Research → sample → approve → publish. Start with lower-risk accessories, branded goods, student kits and gift/service products.</p>
+        <div id="product-pipeline" class="owner-list">Loading…</div>
+      </section>
+      <div class="owner-divider"></div>
+      <section class="owner-module">
+        <div class="owner-section-head"><div><span class="eyebrow">FUNDING</span><h4>Grant Center</h4></div><span class="grant-live">● Monthly search active</span></div>
+        <p class="owner-help">Track grants, contracts, prizes, WOSB/WBE pathways and other funding. HoloGPT prepares drafts; owner approval remains required.</p>
+        <details class="owner-panel"><summary>Document Readiness</summary><div id="grant-docs" class="owner-list">Loading…</div></details>
+        <details class="owner-panel"><summary>Official Funding Sources</summary><div id="grant-sources" class="owner-list">Loading…</div></details>
+        <div class="grant-toolbar"><b>Opportunities</b><button class="text-button" id="grant-refresh" type="button">Refresh</button></div>
+        <p id="grant-status" class="status"></p>
+        <div id="grant-list" class="owner-list">Loading…</div>
+      </section>
+      <div class="owner-divider"></div>
+      <section class="owner-module">
+        <span class="eyebrow">BACKUP + CYBERSECURITY</span><h4>Protect the Business</h4>
+        <div class="security-grid"><span>✓ Supabase RLS</span><span>✓ Private owner authorization</span><span>✓ Server-side AI secrets</span><span>✓ CI + CodeQL</span><span>✓ Git rollback</span><span>✓ Private data export</span></div>
+        <button class="button gold full" id="download-backup" type="button">Download Private Business Backup</button>
+        <p id="backup-status" class="status"></p>
+        <p class="owner-help">Use MFA on email, domain registrar, GitHub, Supabase and Stripe. Keep private backups out of public GitHub.</p>
+      </section>
       <button class="button outline full" id="owner-signout">Sign Out</button>
     </div>
   </aside>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="./app.js"></script>
+  <script src="./app.js"></script>\n  <script src="./owner-tools.js"></script>
 </body>
 </html>
