@@ -68,5 +68,17 @@ async function runOwnerCoach(){
   const e=document.querySelector('#owner-coach-plan');
   if(e)e.innerHTML=(d.actions||[]).map((a,i)=>'<div class="owner-mini-card"><b>'+(i+1)+'. '+safe(a.title||'Next action')+'</b><p>'+safe(a.reason||'')+'</p><small>'+safe(a.category||'Business')+' • Priority '+safe(a.priority??'')+'</small></div>').join('');
 }
-window.loadSculptifyOwnerTools=async()=>{await Promise.all([loadOwnerTasks(),loadBusinessAcademy(),loadProductPipeline(),loadGrantCenter()]);};
+async function loadGrowthRoadmap(){
+  const e=document.querySelector('#growth-roadmap'); if(!e)return;
+  const {data,error}=await db.from('sculptify_growth_stages').select('*').eq('active',true).order('sort_order');
+  if(error){e.textContent='Growth roadmap unavailable.';return;}
+  e.innerHTML=(data||[]).map(g=>'<details class="academy-item growth-stage"><summary>'+safe(g.stage_name)+'</summary><p><b>Objective:</b> '+safe(g.objective)+'</p><p><b>Move here when:</b> '+safe(g.enter_when)+'</p><p><b>Owner actions</b></p><ul>'+(Array.isArray(g.owner_actions)?g.owner_actions:[]).map(x=>'<li>'+safe(x)+'</li>').join('')+'</ul><p><b>HoloGPT / Stubbs AI</b></p><ul>'+(Array.isArray(g.hologpt_actions)?g.hologpt_actions:[]).map(x=>'<li>'+safe(x)+'</li>').join('')+'</ul><p><b>Measure</b></p><ul>'+(Array.isArray(g.metrics_to_watch)?g.metrics_to_watch:[]).map(x=>'<li>'+safe(x)+'</li>').join('')+'</ul><p class="warning-text"><b>Do not scale if:</b> '+(Array.isArray(g.do_not_scale_if)?g.do_not_scale_if.map(safe).join(' • '):'')+'</p></details>').join('');
+}
+async function loadPlatformPackages(){
+  const e=document.querySelector('#platform-packages'); if(!e)return;
+  const {data,error}=await db.from('sculptify_platform_packages').select('*').eq('active',true).order('sort_order');
+  if(error){e.textContent='Pricing packages unavailable.';return;}
+  e.innerHTML=(data||[]).map(p=>'<div class="pricing-row"><div><b>'+safe(p.name)+'</b><small>'+safe(p.description)+'</small><p>'+safe(p.client_visible_note||'')+'</p></div><div class="price-chip">'+(p.billing_type==='percentage_optional'?safe(p.suggested_price)+'%':fm(p.suggested_price))+'<small>'+safe(p.billing_type)+'</small></div></div>').join('');
+}
+window.loadSculptifyOwnerTools=async()=>{await Promise.all([loadOwnerTasks(),loadBusinessAcademy(),loadProductPipeline(),loadGrantCenter(),loadGrowthRoadmap(),loadPlatformPackages()]);};
 document.addEventListener('DOMContentLoaded',()=>{const b=document.querySelector('#download-backup');if(b)b.onclick=downloadBackup;const r=document.querySelector('#grant-refresh');if(r)r.onclick=loadGrantCenter;const c=document.querySelector('#owner-coach-btn');if(c)c.onclick=runOwnerCoach;});
