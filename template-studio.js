@@ -1,4 +1,4 @@
-const CLIENT_PROVISION_URL='https://fxluchtdfpediivhoksl.supabase.co/functions/v1/sculptify-client-provision';
+const CLIENT_PROVISION_URL=window.SCULPTIFY_FUNCTION_URL('sculptify-client-provision');
 async function loadTemplateStudio(){
  const select=document.querySelector('#template-select'),list=document.querySelector('#client-sites');if(!select||!list)return;
  const [tr,sr]=await Promise.all([db.from('sculptify_site_templates').select('*').eq('active',true).order('sort_order'),db.from('sculptify_client_sites').select('*').order('created_at',{ascending:false})]);
