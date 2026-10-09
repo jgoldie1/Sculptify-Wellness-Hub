@@ -1,6 +1,6 @@
-const GRANT_DRAFT_URL='https://fxluchtdfpediivhoksl.supabase.co/functions/v1/sculptify-grant-draft';
-const OWNER_EXPORT_URL='https://fxluchtdfpediivhoksl.supabase.co/functions/v1/sculptify-owner-export';
-const OWNER_COACH_URL='https://fxluchtdfpediivhoksl.supabase.co/functions/v1/sculptify-owner-coach';
+const GRANT_DRAFT_URL=window.SCULPTIFY_FUNCTION_URL('sculptify-grant-draft');
+const OWNER_EXPORT_URL=window.SCULPTIFY_FUNCTION_URL('sculptify-owner-export');
+const OWNER_COACH_URL=window.SCULPTIFY_FUNCTION_URL('sculptify-owner-coach');
 function os(id,msg,bad=false){const e=document.querySelector(id);if(!e)return;e.textContent=msg;e.style.color=bad?'#ff8c9b':'#87e4ab';}
 function fm(v){return v==null?'Amount not listed':new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(Number(v));}
 function fd(v){if(!v)return'No deadline';const d=new Date(v);return isNaN(d)?'No deadline':d.toLocaleDateString();}
@@ -74,11 +74,50 @@ async function loadGrowthRoadmap(){
   if(error){e.textContent='Growth roadmap unavailable.';return;}
   e.innerHTML=(data||[]).map(g=>'<details class="academy-item growth-stage"><summary>'+safe(g.stage_name)+'</summary><p><b>Objective:</b> '+safe(g.objective)+'</p><p><b>Move here when:</b> '+safe(g.enter_when)+'</p><p><b>Owner actions</b></p><ul>'+(Array.isArray(g.owner_actions)?g.owner_actions:[]).map(x=>'<li>'+safe(x)+'</li>').join('')+'</ul><p><b>HoloGPT / Stubbs AI</b></p><ul>'+(Array.isArray(g.hologpt_actions)?g.hologpt_actions:[]).map(x=>'<li>'+safe(x)+'</li>').join('')+'</ul><p><b>Measure</b></p><ul>'+(Array.isArray(g.metrics_to_watch)?g.metrics_to_watch:[]).map(x=>'<li>'+safe(x)+'</li>').join('')+'</ul><p class="warning-text"><b>Do not scale if:</b> '+(Array.isArray(g.do_not_scale_if)?g.do_not_scale_if.map(safe).join(' • '):'')+'</p></details>').join('');
 }
+
+function streetVerseTier(points){
+  const n=Math.max(0,Number(points)||0);
+  if(n>=4000)return{key:'global-wellness-partner',label:'Global Wellness Partner'};
+  if(n>=1800)return{key:'san-diego-powerhouse',label:'San Diego Wellness Powerhouse'};
+  if(n>=750)return{key:'district-leader',label:'Wellness District Leader'};
+  if(n>=250)return{key:'neighborhood-anchor',label:'Neighborhood Anchor'};
+  return{key:'startup',label:'Sculptify Startup'};
+}
+async function loadStreetVersePartnerCenter(){
+  const e=document.querySelector('#streetverse-partner-center');if(!e)return;
+  const [settingsRes,missionsRes,referralsRes,reputationRes]=await Promise.all([
+    db.from('sculptify_streetverse_partner_settings').select('*').eq('id','primary').maybeSingle(),
+    db.from('sculptify_streetverse_missions').select('*').eq('active',true).order('sort_order'),
+    db.from('sculptify_streetverse_referrals').select('attribution_status,server_verified,eligible_platform_revenue_cents,partner_share_cents,currency'),
+    db.from('sculptify_streetverse_reputation_events').select('points,server_verified,event_type')
+  ]);
+  if(settingsRes.error){e.innerHTML='<div class="owner-mini-card">StreetVerse Partner Center is not available in this Supabase project yet.</div>';return;}
+  const settings=settingsRes.data||{};
+  const referrals=referralsRes.data||[];
+  const repEvents=reputationRes.data||[];
+  const verifiedActivations=referrals.filter(r=>r.server_verified&&['verified-activation','eligible-revenue'].includes(r.attribution_status)).length;
+  const eligibleRevenue=referrals.filter(r=>r.server_verified).reduce((n,r)=>n+Number(r.eligible_platform_revenue_cents||0),0);
+  const eligibleShare=referrals.filter(r=>r.server_verified).reduce((n,r)=>n+Number(r.partner_share_cents||0),0);
+  const reputation=repEvents.filter(r=>r.server_verified).reduce((n,r)=>n+Number(r.points||0),0);
+  const tier=streetVerseTier(reputation);
+  const pct=(Number(settings.partner_share_bps||0)/100).toFixed(Number(settings.partner_share_bps||0)%100===0?0:2);
+  const moneyCents=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format((Number(n)||0)/100);
+  e.innerHTML='<div class="sv-partner-grid">'+
+    '<div class="sv-stat"><small>PARTNER CODE</small><b>'+safe(settings.partner_code||'SV-SCULPTIFY-SD')+'</b></div>'+
+    '<div class="sv-stat"><small>DOMINANCE TIER</small><b>'+safe(tier.label)+'</b><span>'+safe(reputation)+' verified reputation</span></div>'+
+    '<div class="sv-stat"><small>VERIFIED ACTIVATIONS</small><b>'+verifiedActivations+'</b><span>Raw scans/signups do not count</span></div>'+
+    '<div class="sv-stat"><small>ELIGIBLE PARTNER SHARE</small><b>'+moneyCents(eligibleShare)+'</b><span>'+pct+'% starter share • '+moneyCents(eligibleRevenue)+' eligible platform revenue</span></div>'+
+  '</div>'+
+  '<div class="sv-policy"><b>Status: '+safe(settings.activation_status||'prepared')+'</b><p>The StreetVerse partner model is prepared. Cash settlement stays off until server-side attribution, partner terms and payout infrastructure are activated. It is one-level only and does not pay for raw scans or raw registrations.</p></div>'+
+  '<div class="grant-toolbar"><b>Sculptify San Diego RP Missions</b><span>'+safe((missionsRes.data||[]).length)+' missions</span></div>'+
+  '<div class="sv-mission-list">'+(missionsRes.data||[]).map(m=>'<div class="sv-mission"><div><span class="mini-tag">'+safe(m.mission_stage)+'</span><b>'+safe(m.title)+'</b><p>'+safe(m.summary)+'</p></div><strong>'+safe(m.reward_xp)+' XP</strong></div>').join('')+'</div>';
+}
+
 async function loadPlatformPackages(){
   const e=document.querySelector('#platform-packages'); if(!e)return;
   const {data,error}=await db.from('sculptify_platform_packages').select('*').eq('active',true).order('sort_order');
   if(error){e.textContent='Pricing packages unavailable.';return;}
   e.innerHTML=(data||[]).map(p=>'<div class="pricing-row"><div><b>'+safe(p.name)+'</b><small>'+safe(p.description)+'</small><p>'+safe(p.client_visible_note||'')+'</p></div><div class="price-chip">'+(p.billing_type==='percentage_optional'?safe(p.suggested_price)+'%':fm(p.suggested_price))+'<small>'+safe(p.billing_type)+'</small></div></div>').join('');
 }
-window.loadSculptifyOwnerTools=async()=>{await Promise.all([loadOwnerTasks(),loadBusinessAcademy(),loadProductPipeline(),loadGrantCenter(),loadGrowthRoadmap(),loadPlatformPackages()]);};
+window.loadSculptifyOwnerTools=async()=>{await Promise.all([loadOwnerTasks(),loadBusinessAcademy(),loadProductPipeline(),loadGrantCenter(),loadGrowthRoadmap(),loadPlatformPackages(),loadStreetVersePartnerCenter()]);};
 document.addEventListener('DOMContentLoaded',()=>{const b=document.querySelector('#download-backup');if(b)b.onclick=downloadBackup;const r=document.querySelector('#grant-refresh');if(r)r.onclick=loadGrantCenter;const c=document.querySelector('#owner-coach-btn');if(c)c.onclick=runOwnerCoach;});
