@@ -1,5 +1,6 @@
 const GRANT_DRAFT_URL='https://fxluchtdfpediivhoksl.supabase.co/functions/v1/sculptify-grant-draft';
 const OWNER_EXPORT_URL='https://fxluchtdfpediivhoksl.supabase.co/functions/v1/sculptify-owner-export';
+const OWNER_COACH_URL='https://fxluchtdfpediivhoksl.supabase.co/functions/v1/sculptify-owner-coach';
 function os(id,msg,bad=false){const e=document.querySelector(id);if(!e)return;e.textContent=msg;e.style.color=bad?'#ff8c9b':'#87e4ab';}
 function fm(v){return v==null?'Amount not listed':new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(Number(v));}
 function fd(v){if(!v)return'No deadline';const d=new Date(v);return isNaN(d)?'No deadline':d.toLocaleDateString();}
@@ -57,5 +58,15 @@ async function downloadBackup(){
  const r=await fetch(OWNER_EXPORT_URL,{headers:{'Authorization':'Bearer '+s.access_token}});if(!r.ok){os('#backup-status','Backup failed.',true);return;}const b=await r.blob();const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='sculptify-backup-'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1000);os('#backup-status','Private backup downloaded. Keep it out of public GitHub.');
 }
 
+async function runOwnerCoach(){
+  os('#owner-coach-status','HoloGPT is reviewing the business…');
+  const session=await ownerSession();if(!session){os('#owner-coach-status','Sign in again.',true);return;}
+  const r=await fetch(OWNER_COACH_URL,{method:'POST',headers:{'Authorization':'Bearer '+session.access_token,'Content-Type':'application/json'},body:'{}'});
+  const d=await r.json().catch(()=>({}));
+  if(!r.ok){os('#owner-coach-status',d.error||'Owner coach unavailable.',true);return;}
+  os('#owner-coach-status',d.coaching||'Here is today’s plan.');
+  const e=document.querySelector('#owner-coach-plan');
+  if(e)e.innerHTML=(d.actions||[]).map((a,i)=>'<div class="owner-mini-card"><b>'+(i+1)+'. '+safe(a.title||'Next action')+'</b><p>'+safe(a.reason||'')+'</p><small>'+safe(a.category||'Business')+' • Priority '+safe(a.priority??'')+'</small></div>').join('');
+}
 window.loadSculptifyOwnerTools=async()=>{await Promise.all([loadOwnerTasks(),loadBusinessAcademy(),loadProductPipeline(),loadGrantCenter()]);};
-document.addEventListener('DOMContentLoaded',()=>{const b=document.querySelector('#download-backup');if(b)b.onclick=downloadBackup;const r=document.querySelector('#grant-refresh');if(r)r.onclick=loadGrantCenter;});
+document.addEventListener('DOMContentLoaded',()=>{const b=document.querySelector('#download-backup');if(b)b.onclick=downloadBackup;const r=document.querySelector('#grant-refresh');if(r)r.onclick=loadGrantCenter;const c=document.querySelector('#owner-coach-btn');if(c)c.onclick=runOwnerCoach;});
