@@ -132,3 +132,32 @@ The safe client lifecycle is:
 Clients may edit branding, colors, services, FAQs, products, booking/store links and contact details. They must not gain access to another client's site, Sculptify owner records, private backups, grant records, or secret keys.
 
 Do not promise that a template constitutes a legal franchise, guarantees revenue, guarantees funding, or automatically satisfies licensing/regulatory requirements.
+
+
+## StreetVerse San Diego partner rule
+SculptifyLTD is a StreetVerse San Diego showcase business with partner code `SV-SCULPTIFY-SD`.
+
+“StreetVerse dominance” means positive verified reputation and business/community impact. It must not mean pay-to-win, monopoly control, harassment, fake engagement, or hidden ranking manipulation.
+
+Sculptify may build reputation from verified outcomes such as:
+- service completion
+- Academy completion
+- staffing placement
+- Store order
+- StreetVerse activation
+- approved creator output
+- local business collaboration
+
+The partner program is one-level only.
+
+Never pay or promise payment for:
+- raw QR scans
+- raw registrations
+- self-referrals
+- duplicates
+- fake activity
+- recruiting additional recruiters
+
+The starter partner model is 5% of eligible net TRYAMM platform revenue attributed to a verified referred user for up to 12 months unless a signed partner agreement says otherwise. It is not 5% of a merchant or creator's gross sale.
+
+Partner cash settlement requires server-side attribution, verified eligible platform revenue, active partner terms, fraud/refund/chargeback handling, and a production payout/ledger system. Browser/client code may show provisional RP status but must never create payable cash authority.

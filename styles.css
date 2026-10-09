@@ -32,3 +32,10 @@
 .price-chip{min-width:92px;text-align:center;border:1px solid #b17e37;background:#20160d;color:#f0cf80;border-radius:12px;padding:9px;font-weight:900}.price-chip small{color:#c8a765;font-size:.6rem;margin-top:3px}
 .growth-stage summary{color:#f0cf80}.growth-stage ul{padding-left:18px}
 @media(max-width:600px){.pricing-row{grid-template-columns:1fr}.price-chip{width:max-content}}
+
+.sv-partner-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.sv-stat{border:1px solid #47344d;background:linear-gradient(180deg,#171019,#100c12);border-radius:14px;padding:11px}
+.sv-stat small,.sv-stat span{display:block}.sv-stat small{font-size:.63rem;color:#b796c7;font-weight:900;letter-spacing:.06em}.sv-stat b{display:block;color:#f0cf80;font-size:1rem;margin:4px 0}.sv-stat span{font-size:.66rem;color:#aa98a8}
+.sv-policy{border:1px solid #315b42;background:#102017;border-radius:13px;padding:11px}.sv-policy b{color:#8ee5ad}.sv-policy p{font-size:.72rem!important;color:#b7c9bd!important;margin:5px 0 0!important}
+.sv-mission-list{display:grid;gap:8px}.sv-mission{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:start;border:1px solid #39283e;background:#141016;border-radius:13px;padding:11px}.sv-mission b{display:block;color:#efd18b;margin-top:5px}.sv-mission p{font-size:.71rem!important;color:#aa98a8!important;margin:4px 0 0!important}.sv-mission strong{color:#8feeff;font-size:.76rem;white-space:nowrap}
+@media(max-width:600px){.sv-partner-grid{grid-template-columns:1fr}.sv-mission{grid-template-columns:1fr}}
