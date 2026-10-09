@@ -7,7 +7,8 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="SculptifyLTD">
-  <meta name="description" content="SculptifyLTD — holistic healing, body sculpting, academy, staffing and store in San Diego. HoloGPT powered by Stubbs AI.">\n  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="description" content="SculptifyLTD — holistic healing, body sculpting, academy, staffing and store in San Diego. HoloGPT powered by Stubbs AI.">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./brand-mark.svg" type="image/svg+xml">
   <link rel="stylesheet" href="./styles.css">
@@ -25,7 +26,7 @@
       </a>
       <nav>
         <a href="#services">Services</a><a href="#academy">Academy</a><a href="#staffing">Staffing</a>
-        <a href="#store">Store</a><a href="#hologpt">HoloGPT</a>
+        <a href="#store">Store</a><a href="./templates.html">Business Templates</a><a href="#hologpt">HoloGPT</a>
         <a class="button gold" href="#booking">Book Online</a>
       </nav>
     </div>
@@ -204,6 +205,24 @@
         <p id="grant-status" class="status"></p>
         <div id="grant-list" class="owner-list">Loading…</div>
       </section>
+
+      <div class="owner-divider"></div>
+      <section class="owner-module">
+        <div class="owner-section-head"><div><span class="eyebrow">TEMPLATE STUDIO</span><h4>Sell Business-in-a-Box Websites</h4></div><a class="text-button" href="./templates.html" target="_blank">Template Shop</a></div>
+        <p class="owner-help">Choose a business template, assign it to a client email, and the client can edit → save → preview → publish without coding.</p>
+        <form id="template-studio-form" class="owner-form">
+          <label>Template<select id="template-select" required><option value="">Loading templates…</option></select></label>
+          <label>Client business name<input id="client-business-name" required placeholder="Example: Golden Glow Beauty"></label>
+          <label>Client owner email<input id="client-email" required type="email" placeholder="client@example.com"></label>
+          <div class="owner-two"><label>Client owner name<input id="client-owner-name"></label><label>Location<input id="client-location" placeholder="City, State"></label></div>
+          <button class="button purple full" type="submit">Create Client Business</button>
+          <p id="template-studio-status" class="status"></p>
+        </form>
+        <div id="template-handoff"></div>
+        <div class="grant-toolbar"><b>Client Sites</b><button class="text-button" type="button" onclick="window.loadTemplateStudio?.()">Refresh</button></div>
+        <div id="client-sites" class="owner-list">Loading…</div>
+        <p class="owner-help">Client editor: <a href="./client-editor.html" target="_blank">open editor</a>. Published client pages use <code>client.html?site=their-slug</code>.</p>
+      </section>
       <div class="owner-divider"></div>
       <section class="owner-module">
         <span class="eyebrow">BACKUP + CYBERSECURITY</span><h4>Protect the Business</h4>
@@ -217,6 +236,8 @@
   </aside>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="./app.js"></script>\n  <script src="./owner-tools.js"></script>
+  <script src="./app.js"></script>
+  <script src="./owner-tools.js"></script>
+  <script src="./template-studio.js"></script>
 </body>
 </html>
