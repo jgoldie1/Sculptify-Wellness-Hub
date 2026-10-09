@@ -1,5 +1,5 @@
-const SUPABASE_URL='https://fxluchtdfpediivhoksl.supabase.co';
-const SUPABASE_KEY='sb_publishable_y2OadDy1zy8QlWy-YAcdlg_uzAYMLzj';
+const SUPABASE_URL=window.SCULPTIFY_CONFIG.supabaseUrl;
+const SUPABASE_KEY=window.SCULPTIFY_CONFIG.supabasePublishableKey;
 const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 const safe=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 const money=v=>v==null||v===''?'':new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(Number(v));
