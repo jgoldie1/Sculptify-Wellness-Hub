@@ -26,3 +26,9 @@
 .client-links{display:flex;gap:8px;flex-wrap:wrap}
 .owner-module code{font-size:.7rem;color:#d9a6ef;word-break:break-all}
 @media(max-width:600px){.client-site-row{grid-template-columns:1fr}.client-links{justify-content:flex-start}}
+
+.pricing-row{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start;border:1px solid #3d2a42;background:#151017;border-radius:14px;padding:12px}
+.pricing-row b,.pricing-row small{display:block}.pricing-row>div>small{color:#aa98a8;font-size:.68rem}.pricing-row p{font-size:.7rem!important;color:#a993a5!important;margin:5px 0 0!important}
+.price-chip{min-width:92px;text-align:center;border:1px solid #b17e37;background:#20160d;color:#f0cf80;border-radius:12px;padding:9px;font-weight:900}.price-chip small{color:#c8a765;font-size:.6rem;margin-top:3px}
+.growth-stage summary{color:#f0cf80}.growth-stage ul{padding-left:18px}
+@media(max-width:600px){.pricing-row{grid-template-columns:1fr}.price-chip{width:max-content}}
