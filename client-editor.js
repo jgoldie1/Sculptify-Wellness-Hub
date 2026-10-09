@@ -1,10 +1,11 @@
-const SUPABASE_URL='https://fxluchtdfpediivhoksl.supabase.co';const SUPABASE_KEY='sb_publishable_y2OadDy1zy8QlWy-YAcdlg_uzAYMLzj';const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);const $=s=>document.querySelector(s);let current=null;
+const SUPABASE_URL='https://fxluchtdfpediivhoksl.supabase.co';const SUPABASE_KEY='sb_publishable_y2OadDy1zy8QlWy-YAcdlg_uzAYMLzj';const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);const CLIENT_CLAIM_URL='https://fxluchtdfpediivhoksl.supabase.co/functions/v1/sculptify-client-claim';const $=s=>document.querySelector(s);let current=null;
 function parse3(v){return v.split(/\n+/).map(x=>x.trim()).filter(Boolean).map(x=>{const [name,description,price]=x.split('|').map(y=>y.trim());return{name,description,price}})}
 function parse2(v){return v.split(/\n+/).map(x=>x.trim()).filter(Boolean).map(x=>{const [question,answer]=x.split('|').map(y=>y.trim());return{question,answer}})}
 function lines3(a){return (Array.isArray(a)?a:[]).map(x=>[x.name||'',x.description||'',x.price||''].join(' | ')).join('\n')}
 function lines2(a){return (Array.isArray(a)?a:[]).map(x=>[x.question||'',x.answer||''].join(' | ')).join('\n')}
 async function refresh(){
  const {data:{user}}=await db.auth.getUser();if(!user){$('#login').classList.remove('hidden');$('#workspace').classList.add('hidden');return;}
+ const session=(await db.auth.getSession()).data.session;if(session){await fetch(CLIENT_CLAIM_URL,{method:'POST',headers:{'Authorization':'Bearer '+session.access_token}}).catch(()=>{});}
  $('#login').classList.add('hidden');$('#workspace').classList.remove('hidden');
  const {data:members}=await db.from('sculptify_client_members').select('site_id,role').eq('user_id',user.id);
  const ids=(members||[]).map(x=>x.site_id);if(!ids.length){$('#sites').innerHTML='<p class="small">No business template is assigned to this email yet.</p>';return;}
