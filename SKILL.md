@@ -114,3 +114,21 @@ Do not call Sculptify fully launch-ready until:
 - PWA install is tested
 - permanent QR is tested
 - security checks pass
+
+
+## Template business rule
+Sculptify also operates as a white-label business starter/template platform.
+
+The safe client lifecycle is:
+1. Sculptify owner selects an approved template.
+2. Owner assigns the client business and verified client email.
+3. Client signs in by magic link.
+4. Client edits only the site assigned to that verified account.
+5. Client saves a draft.
+6. Client previews the draft.
+7. Client explicitly publishes.
+8. Custom domain mapping happens only after the client approves the site.
+
+Clients may edit branding, colors, services, FAQs, products, booking/store links and contact details. They must not gain access to another client's site, Sculptify owner records, private backups, grant records, or secret keys.
+
+Do not promise that a template constitutes a legal franchise, guarantees revenue, guarantees funding, or automatically satisfies licensing/regulatory requirements.
