@@ -119,7 +119,7 @@ async function refreshOwner(){
   $('#setting-location').value=siteSettings.location||'San Diego, California';
   $('#setting-url').value=siteSettings.site_url||'';
   $('#setting-hero').value=siteSettings.hero_title||'Sculpt Your Body. Heal Your Mind. Build Your Future.';
-  setTimeout(()=>window.loadSculptifyOwnerTools?.(),0);
+  setTimeout(()=>{window.loadSculptifyOwnerTools?.();window.loadTemplateStudio?.();},0);
 }
 $('#owner-login-btn').onclick=async()=>{
   const email=$('#owner-email').value.trim().toLowerCase();
