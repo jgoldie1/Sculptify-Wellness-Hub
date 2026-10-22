@@ -24,6 +24,11 @@ jobs:
       - name: Validate critical website files
         run: |
           node -e "const fs=require('fs'),assert=require('assert');const h=fs.readFileSync('index.html','utf8');for(const id of ['services','academy','staffing','store','hologpt','booking','owner-login','commerce-launch'])assert(h.includes('id=\"'+id+'\"'),'Missing '+id);for(const f of ['app.js','owner-tools.js','config.js','owner-launch-guide.html','manifest.webmanifest'])assert(fs.existsSync(f),'Missing '+f);JSON.parse(fs.readFileSync('manifest.webmanifest','utf8'));const ids=[...h.matchAll(/\\bid=\"([^\"]+)\"/g)].map(x=>x[1]);assert(new Set(ids).size===ids.length,'Duplicate HTML IDs');console.log('Regression checks passed')"
+      - name: Verify withdrawn split remains disabled
+        run: node tests/sculptify-revenue-share.test.mjs
+      - name: Verify Scout and owner guide are linked
+        run: |
+          node -e "const fs=require('fs'),assert=require('assert');const h=fs.readFileSync('index.html','utf8');for(const p of ['scout.html','owner-launch-guide.html']){assert(fs.existsSync(p),'Missing '+p);assert(h.includes('href=\"./'+p+'\"'),'Missing nav '+p)};console.log('Scout navigation passed')"
       - name: Detect obvious exposed credentials
         run: |
           if grep -En '(sb_secret_|SUPABASE_SERVICE_ROLE_KEY|sk_live_[[:alnum:]]{12,})' -- *.js; then echo 'Potential browser credential leak'; exit 1; fi
