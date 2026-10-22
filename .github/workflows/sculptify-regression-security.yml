@@ -1,0 +1,29 @@
+name: Sculptify Regression and Security
+on:
+  push:
+    branches: [main, feature/sculptify-editable-brand]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate browser JavaScript
+        run: |
+          for file in app.js owner-tools.js template-studio.js config.js; do
+            if [ -f "$file" ]; then node --check "$file"; fi
+          done
+      - name: Validate critical website files
+        run: |
+          node -e "const fs=require('fs'),assert=require('assert');const h=fs.readFileSync('index.html','utf8');for(const id of ['services','academy','staffing','store','hologpt','booking','owner-login','commerce-launch'])assert(h.includes('id=\"'+id+'\"'),'Missing '+id);for(const f of ['app.js','owner-tools.js','config.js','owner-launch-guide.html','manifest.webmanifest'])assert(fs.existsSync(f),'Missing '+f);JSON.parse(fs.readFileSync('manifest.webmanifest','utf8'));const ids=[...h.matchAll(/\\bid=\"([^\"]+)\"/g)].map(x=>x[1]);assert(new Set(ids).size===ids.length,'Duplicate HTML IDs');console.log('Regression checks passed')"
+      - name: Detect obvious exposed credentials
+        run: |
+          if grep -En '(sb_secret_|SUPABASE_SERVICE_ROLE_KEY|sk_live_[[:alnum:]]{12,})' -- *.js; then echo 'Potential browser credential leak'; exit 1; fi
