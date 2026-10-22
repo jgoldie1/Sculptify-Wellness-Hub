@@ -49,3 +49,11 @@ Pilot can remain 15 sites or expand to 19 depending on owner approvals and opera
 
 ## Revised candidate total
 20 vendors in registry; continue phased rollout and confirm each owner's consent before publishing. Raymond's business is a distinct vendor from Silvia Caster's insurance business, with separate owner account, branding, data, and regulated-service disclosures.
+
+
+## OmniCare 360 leadership — Raymond Jarreau (user-designated, pending acceptance)
+The platform founder designates Raymond Jarreau as proposed operational lead of OmniCare 360, separate from his own insurance/retirement/estate-planning vendor website. Do not assume Raymond has accepted or received account access. Scope: partner/provider onboarding, service catalog review, approved insurance/benefits referrals, client service escalation, staff operations, KPI review, compliance coordination. Founder retains ownership and final authority over finances, contracts, permissions and policy. Grant least-privilege role only after identity verification, written agreement, explicit acceptance, and a security/privacy review. No cross-business client data access by default.
+
+OmniCare 360 proposed divisions: care navigation, wellness services, provider referral directory, benefits/insurance education, prescription savings information, non-emergency transportation referrals, and client support. Distinguish each from regulated medical care or insurance brokerage. For telehealth or protected health information, obtain legal review and HIPAA-appropriate systems, agreements and workflows before collecting medical data. No medical diagnoses, claims of insurance coverage, or unlicensed insurance advice through AI.
+
+Leadership dashboard backlog: intake queue, consent records, service routing, partner credential review, client follow-up, case statuses, incident escalation, service-level metrics and budget limits. No live integration or staff permissions have been provisioned by this planning change.
