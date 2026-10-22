@@ -43,3 +43,9 @@ The original 15-site pilot is expanded by four additional candidate vendors. Do 
 
 ## Revised rollout
 Pilot can remain 15 sites or expand to 19 depending on owner approvals and operating costs. Keep all 19 in the candidate registry; launch in waves of 3, 5, 7 and then 4 after acceptance tests. Every vendor receives independently branded site, mobile-friendly owner editor, privacy and contact pages, booking/checkout only when verified, optional Shopify, Stubbs AI and Quantum Sourcing with tenant-isolated data. No vendor website is represented as live until deployed and checked.
+
+
+20. Raymond Jarreau — insurance, 401(k) and retirement education, permanent life insurance / 'infinite banking' concepts, trusts and estate-planning referrals, and related financial services. Proposed website sections: Insurance, Retirement & 401(k), Infinite Banking Education, Trust & Estate Planning, Book Consultation, Client Intake, Disclosures. Verify precise services, legal entity, insurance license and appointments, securities/investment adviser registration where applicable, and professional qualifications. A 401(k) plan advisory or investment recommendation may trigger additional registration and fiduciary duties; legal trust drafting must be handled by an appropriately licensed attorney. No guaranteed returns, tax benefits, risk-free claims, or implication that an insurance policy is a bank. Client intake must avoid collecting Social Security numbers or sensitive financial records in unprotected web forms. All recommendations require professional review.
+
+## Revised candidate total
+20 vendors in registry; continue phased rollout and confirm each owner's consent before publishing. Raymond's business is a distinct vendor from Silvia Caster's insurance business, with separate owner account, branding, data, and regulated-service disclosures.
