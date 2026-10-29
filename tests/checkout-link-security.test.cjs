@@ -12,7 +12,7 @@ assert.ok(start >= 0, 'Production checkout guard must exist');
 const end = source.indexOf('\n}', start);
 assert.ok(end > start, 'Production checkout guard must have a closing brace');
 const snippet = source.slice(start, end + 2);
-const approvedCheckoutUrl = vm.runInNewContext(snippet + '\napprovedCheckoutUrl;');
+const approvedCheckoutUrl = vm.runInNewContext(snippet + '\napprovedCheckoutUrl;', { URL });
 
 test('accepts Stripe-hosted HTTPS payment links', () => {
   assert.equal(approvedCheckoutUrl('https://buy.stripe.com/test_abc'), 'https://buy.stripe.com/test_abc');
