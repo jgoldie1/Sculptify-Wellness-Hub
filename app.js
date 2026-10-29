@@ -10,6 +10,13 @@ const productIcons={'aftercare':'🧴','student-kit':'🧰','wellness-products':
 
 function safe(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));}
 function money(v){return v==null?'':new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(Number(v));}
+// Only allow owner-approved HTTPS Stripe Payment Links; never render arbitrary URLs as checkout actions.
+function approvedCheckoutUrl(value){
+  try{
+    const url=new URL(String(value||''));
+    return url.protocol==='https:' && (url.hostname==='buy.stripe.com'||url.hostname==='checkout.stripe.com') ? url.href : null;
+  }catch{return null;}
+}
 function setStatus(id,msg,bad=false){const el=$(id);if(!el)return;el.textContent=msg;el.style.color=bad?'#ff8c9b':'#87e4ab';}
 
 async function loadSettings(){
@@ -46,7 +53,7 @@ async function loadProducts(){
   const {data,error}=await db.from('sculptify_products').select('*').order('sort_order');
   const el=$('#products-grid');
   if(error){el.innerHTML='<div class="loading-card">Store is temporarily unavailable.</div>';return;}
-  el.innerHTML=(data||[]).map(p=>'<article class="product-card"><div class="product-art">'+(productIcons[p.slug]||'🛍️')+'</div><div class="product-body"><span class="mini-tag">'+safe(p.category||'Store')+'</span><h3>'+safe(p.name)+'</h3><p>'+safe(p.short_description||'')+'</p><div class="service-meta">'+(p.price?'<span>'+money(p.price)+'</span>':'')+'<span>'+safe(p.supplier_type||'owned')+'</span></div>'+(p.checkout_url?'<a class="button gold" rel="noopener" href="'+safe(p.checkout_url)+'">Buy Now</a>':'<button class="button outline" data-demo="Stripe checkout becomes active when the owner adds a payment link for '+safe(p.name)+'.">Coming Online</button>')+'</div></article>').join('');
+  el.innerHTML=(data||[]).map(p=>'<article class="product-card"><div class="product-art">'+(productIcons[p.slug]||'🛍️')+'</div><div class="product-body"><span class="mini-tag">'+safe(p.category||'Store')+'</span><h3>'+safe(p.name)+'</h3><p>'+safe(p.short_description||'')+'</p><div class="service-meta">'+(p.price?'<span>'+money(p.price)+'</span>':'')+'<span>'+safe(p.supplier_type||'owned')+'</span></div>'+(approvedCheckoutUrl(p.checkout_url)?'<a class="button gold" rel="noopener noreferrer" target="_blank" href="'+safe(approvedCheckoutUrl(p.checkout_url))+'">Secure Checkout</a>':'<button class="button outline" data-demo="Checkout is unavailable until the owner adds an approved Stripe payment link for '+safe(p.name)+'.">Checkout Pending</button>')+'</div></article>').join('');
   $$('[data-demo]').forEach(b=>b.onclick=()=>appendMessage('coach',b.dataset.demo));
 }
 
